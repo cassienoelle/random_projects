@@ -15,8 +15,8 @@ var avatarX;
 var avatarY;
 
 // The size of our avatar, aspect ratio maintained
-var avatarWidth = 50;
-var avatarHeight = avatarWidth * (600/400);
+var avatarWidth = 150;
+var avatarHeight = avatarWidth * (760/600);
 // How much bigger or smaller the avatar gets with each successful dodge
 var avatarWidthChange;
 
@@ -27,6 +27,12 @@ var avatarVY = 0;
 // How much faster or slower the avatar gets with each successful dodge
 var avatarSpeedChange;
 
+// Values to change tint of avatar
+var red;
+var green;
+var blue;
+var choices = [125, 255];
+
 // The enemy image
 var enemy;
 
@@ -35,7 +41,7 @@ var enemyX;
 var enemyY;
 // The size of the enemy, aspect ratio maintained
 var enemyWidth = 75;
-var enemyHeight = enemyWidth * (275/400);
+var enemyHeight = enemyWidth;
 // How much bigger the enemy gets with each successful dodge
 var enemyWidthIncrease = 5;
 
@@ -65,10 +71,10 @@ var textY;
 function preload() {
   // Load Khand-SemiBold font
   khandFont = loadFont("assets/fonts/Khand-SemiBold.ttf");
-  // Load the enemy, an image of a human brain
-  enemy = loadImage("assets/images/brain.png");
-  // Load our avatar, an image of a human heart
-  avatar = loadImage("assets/images/heart.png");
+  // Load the enemy, an image of a marijuana leaf
+  enemy = loadImage("assets/images/weed.png");
+  // Load our avatar, an image of a wizard
+  avatar = loadImage("assets/images/wizard.png");
 }
 
 // setup()
@@ -76,7 +82,7 @@ function preload() {
 // Make the canvas, position the avatar and enemy, add text to track dodges
 function setup() {
   // Create our playing area
-  createCanvas(500,500);
+  createCanvas(1000,1000);
 
   // Put the avatar in the centre
   avatarX = width/2;
@@ -100,15 +106,8 @@ function setup() {
 // Handle moving the avatar and enemy and checking for dodges and
 // game over situations.
 function draw() {
-  // A black background that pulses white every 1.8 seconds
-  // If emergency shrink used, background turns purple
-  if (frameCount % (60 * 1.8) === 1) {
-    background(255);
-  } else if (shrinkUsed === true) {
-    background(75,0,130);
-  } else {
-    background(0);
-  }
+  // A black background
+  background(255);
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
@@ -158,15 +157,11 @@ function draw() {
     enemyY = random(0,height);
     // Reset the enemy's size and speed
     enemyWidth = 75;
-    enemyHeight = enemyWidth * (275/400);
+    enemyHeight = enemyWidth;
     enemySpeed = 5;
     // Reset the avatar's position
     avatarX = width/2;
     avatarY = height/2;
-    // Reset the avatar's size and speed
-    avatarWidth = 50;
-    avatarHeight = avatarWidth * (600/400);
-    avatarSpeed = 10;
     // Reset the dodge counter
     dodges = 0;
     // Reset the emergency shrink button
@@ -180,13 +175,10 @@ function draw() {
     enemyX = 0;
     enemyY = random(0,height);
     enemyWidth = 75;
-    enemyHeight = enemyWidth * (275/400);
+    enemyHeight = enemyWidth;
     enemySpeed = 5;
     avatarX = width/2;
     avatarY = height/2;
-    avatarWidth = 50;
-    avatarHeight = avatarWidth * (600/400);
-    avatarSpeed = 10;
     dodges = 0;
     shrinkUsed = false;
   }
@@ -203,22 +195,7 @@ function draw() {
     // Increase the enemy's speed and size to make the game harder
     enemySpeed = enemySpeed + enemySpeedIncrease;
     enemyWidth = enemyWidth + enemyWidthIncrease;
-    enemyHeight = enemyWidth * (275/400);
-    // Change the avatar's speed by a random amount
-    // Speed must remain above 0
-    avatarSpeedChange =  random(-0.5, 0.5);
-    if (avatarSpeed + avatarSpeedChange > 0) {
-      avatarSpeed += avatarSpeedChange;
-      console.log("speed = " + avatarSpeed);
-    }
-    // Change the avatar's size by a random amount
-    // Size must remain above 0
-    avatarWidthChange = random(-5, 5);
-    if (avatarWidth + avatarWidthChange > 0) {
-      avatarWidth += avatarWidthChange;
-      avatarHeight = avatarWidth * (600/400);
-      console.log("width = " + avatarWidth);
-    }
+    enemyHeight = enemyWidth;
   }
 
   // Text to display successful dodges on canvas using correct grammar
@@ -231,11 +208,20 @@ function draw() {
     text(dodges + " DODGES!", textX, textY);
   }
 
-  // Display our avatar
-  image(avatar, avatarX, avatarY, avatarWidth, avatarHeight);
-
   // Display the enemy
   image(enemy, enemyX, enemyY, enemyWidth, enemyHeight);
+
+  // Change tint of avatar every 5 frames
+  if (frameCount % 5 === 1) {
+    red = random(choices);
+    blue = random(choices);
+    green = random(choices);
+    tint(red, green, blue);
+    console.log("tinted!");
+    }
+
+  // Display our avatar
+  image(avatar, avatarX, avatarY, avatarWidth, avatarHeight);
 
 }
 
@@ -248,7 +234,7 @@ function keyTyped() {
   // Works once per game play
   if (keyCode === 32 && shrinkUsed === false) {
     enemyWidth = 50;
-    enemyHeight = enemyWidth * (275/400);
+    enemyHeight = enemyWidth;
     shrinkUsed = true;
     console.log("SHRUNK!");
   }
