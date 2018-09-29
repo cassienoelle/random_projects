@@ -35,28 +35,28 @@ var green;
 var blue;
 var choices = [125, 255];
 
-// The enemy image
-var enemy;
+// The drugs image
+var drugs;
 
-// The position of the enemy
-var enemyX;
-var enemyY;
-// The size of the enemy, aspect ratio maintained
-var enemyWidth = 50;
-var enemyHeight = enemyWidth;
-// How much bigger the enemy gets with each successful dodge
-var enemyWidthIncrease = 5;
+// The position of the drugs
+var drugsX;
+var drugsY;
+// The size of the drugs, aspect ratio maintained
+var drugsWidth = 50;
+var drugsHeight = drugsWidth;
+// How much bigger the drugs gets with each successful dodge
+var drugsWidthIncrease = 5;
 
-// The speed and velocity of our enemy
-var enemySpeed = 5;
-var enemyVX = 5;
-// How much faster the enemy gets with each successful dodge
-var enemySpeedIncrease = 0.5;
+// The speed and velocity of our drugs
+var drugsSpeed = 5;
+var drugsVX = 5;
+// How much faster the drugs gets with each successful dodge
+var drugsSpeedIncrease = 0.5;
 
-// How many dodges the player has made
-var dodges = 0;
+// How many points the player has made
+var points = 0;
 
-// In case of emergency: shrink enemy
+// In case of emergency: shrink drugs
 var shrink;
 // Limit to one use per game play
 var shrinkUsed;
@@ -75,15 +75,18 @@ function preload() {
   khandFont = loadFont("assets/fonts/Khand-SemiBold.ttf");
   // Load the background, image of a forest
   backgroundImage = loadImage("assets/images/forest.jpg");
-  // Load the enemy, an image of a marijuana leaf
-  enemy = loadImage("assets/images/pill.png");
+  // Load the drugs, an image of a marijuana leaf
+  drugs = loadImage("assets/images/pill.png");
   // Load our avatar, an image of a wizard
   avatar = loadImage("assets/images/wizard.png");
+  // Load the larper image
+  larper = loadImage("assets/images/larper.png");
+
 }
 
 // setup()
 //
-// Make the canvas, position the avatar and enemy, add text to track dodges
+// Make the canvas, position the avatar and drugs, add text to track points
 function setup() {
   // Create our playing area
   createCanvas(1000,1000);
@@ -92,9 +95,9 @@ function setup() {
   avatarX = width/2;
   avatarY = height/2;
 
-  // Put the enemy to the left at a random y coordinate within the canvas
-  enemyX = 0;
-  enemyY = random(0,height);
+  // Put the drugs to the left at a random y coordinate within the canvas
+  drugsX = 0;
+  drugsY = random(0,height);
 
   // Style text and display at bottom right of canvas
   fill(255);
@@ -107,7 +110,7 @@ function setup() {
 
 // draw()
 //
-// Handle moving the avatar and enemy and checking for dodges and
+// Handle moving the avatar and drugs and checking for points and
 // game over situations.
 function draw() {
 
@@ -140,36 +143,36 @@ function draw() {
   }
 
   // Check for additional keyboard commands from player
-  // Shrink enemy when space bar typed
+  // Shrink drugs when space bar typed
     keyTyped();
 
   // Move the avatar according to its calculated velocity
   avatarX = avatarX + avatarVX;
   avatarY = avatarY + avatarVY;
 
-  // The enemy always moves at enemySpeed (which increases)
-  enemyVX = enemySpeed;
-  // Update the enemy's position based on its velocity
-  enemyX = enemyX + enemyVX;
+  // The drugs always moves at drugsSpeed (which increases)
+  drugsVX = drugsSpeed;
+  // Update the drugs's position based on its velocity
+  drugsX = drugsX + drugsVX;
 
-  // Check if the enemy and avatar overlap - if they do the wizard gains a point
-  // We do this by checking if the distance between the centre of the enemy
+  // Check if the drugs and avatar overlap - if they do the wizard gains a point
+  // We do this by checking if the distance between the centre of the drugs
   // and the centre of the avatar is less that their combined radii
-  if (dist(enemyX,enemyY,avatarX,avatarY) < enemyWidth/2 + avatarWidth/2) {
+  if (dist(drugsX,drugsY,avatarX,avatarY) < drugsWidth/2 + avatarWidth/2) {
     // Tell the player they lost
     console.log("POINT!");
-    // Reset the enemy's position
-    enemyX = 0;
-    enemyY = random(0,height);
-    // Reset the enemy's size and speed
-    enemyWidth = 50;
-    enemyHeight = enemyWidth;
-    enemySpeed = 5;
+    // update points counter
+    points = points + 1;
+    // Reset the drugs's position
+    drugsX = 0;
+    drugsY = random(0,height);
+    // Reset the drugs's size and speed
+    drugsWidth = 50;
+    drugsHeight = drugsWidth;
+    drugsSpeed = 5;
     // Reset the avatar's position
     //avatarX = width/2;
     //avatarY = height/2;
-    // Reset the dodge counter
-    dodges = 0;
     // Reset the emergency shrink button
     shrinkUsed = false;
   }
@@ -178,44 +181,40 @@ function draw() {
   if (avatarX < 0 || avatarX > width || avatarY < 0 || avatarY > height) {
     // If they went off the screen they lose in the same way as above.
     console.log("YOU LOSE!");
-    enemyX = 0;
-    enemyY = random(0,height);
-    enemyWidth = 50;
-    enemyHeight = enemyWidth;
-    enemySpeed = 5;
+    drugsX = 0;
+    drugsY = random(0,height);
+    drugsWidth = 50;
+    drugsHeight = drugsWidth;
+    drugsSpeed = 5;
     avatarX = width/2;
     avatarY = height/2;
-    dodges = 0;
+    points = 0;
     shrinkUsed = false;
   }
 
-  // Check if the enemy has moved all the way across the screen
-  if (enemyX > width) {
-    // This means the player dodged so update its dodge statistic
-    dodges = dodges + 1;
-    // Tell them how many dodges they have made in console
-    //console.log(dodges + " DODGES!");
-    // Reset the enemy's position to the left at a random height
-    enemyX = 0;
-    enemyY = random(0,height);
-    // Increase the enemy's speed and size to make the game harder
-    enemySpeed = enemySpeed + enemySpeedIncrease;
-    enemyWidth = enemyWidth + enemyWidthIncrease;
-    enemyHeight = enemyWidth;
+  // Check if the drugs has moved all the way across the screen
+  if (drugsX > width) {
+    // Reset the drugs's position to the left at a random height
+    drugsX = 0;
+    drugsY = random(0,height);
+    // Increase the drugs's speed and size to make the game harder
+    drugsSpeed = drugsSpeed + drugsSpeedIncrease;
+    drugsWidth = drugsWidth + drugsWidthIncrease;
+    drugsHeight = drugsWidth;
   }
 
-  // Text to display successful dodges on canvas using correct grammar
-  if (dodges === 1) {
+  // Text to display successful points on canvas using correct grammar
+  if (points === 1) {
     // Singular if 1 dodge
-    text(dodges + " DODGE!", textX, textY);
+    text(points + " POINT!", textX, textY);
   }
   else {
-    // Plural if zero or multiple dodges
-    text(dodges + " DODGES!", textX, textY);
+    // Plural if zero or multiple points
+    text(points + " POINTS!", textX, textY);
   }
 
-  // Display the enemy
-  image(enemy, enemyX, enemyY, enemyWidth, enemyHeight);
+  // Display the drugs
+  image(drugs, drugsX, drugsY, drugsWidth, drugsHeight);
 
   // Change tint every 5 framess
   if (frameCount % 5 === 1) {
@@ -242,8 +241,8 @@ function keyTyped() {
   // If space bar pressed and emergency shrink not used, shrink avatar
   // Works once per game play
   if (keyCode === 32 && shrinkUsed === false) {
-    enemyWidth = 50;
-    enemyHeight = enemyWidth;
+    drugsWidth = 50;
+    drugsHeight = drugsWidth;
     shrinkUsed = true;
     console.log("SHRUNK!");
   }
