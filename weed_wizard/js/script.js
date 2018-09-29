@@ -6,6 +6,8 @@ A psychedelic birthday game
 Inspired by Huntress Manwitch
 
 *********************************************************/
+// The background image
+var backgroundImage;
 
 // The avatar image
 var avatar;
@@ -40,7 +42,7 @@ var enemy;
 var enemyX;
 var enemyY;
 // The size of the enemy, aspect ratio maintained
-var enemyWidth = 75;
+var enemyWidth = 50;
 var enemyHeight = enemyWidth;
 // How much bigger the enemy gets with each successful dodge
 var enemyWidthIncrease = 5;
@@ -71,8 +73,10 @@ var textY;
 function preload() {
   // Load Khand-SemiBold font
   khandFont = loadFont("assets/fonts/Khand-SemiBold.ttf");
+  // Load the background, image of a forest
+  backgroundImage = loadImage("assets/images/forest.jpg");
   // Load the enemy, an image of a marijuana leaf
-  enemy = loadImage("assets/images/weed.png");
+  enemy = loadImage("assets/images/pill.png");
   // Load our avatar, an image of a wizard
   avatar = loadImage("assets/images/wizard.png");
 }
@@ -106,8 +110,10 @@ function setup() {
 // Handle moving the avatar and enemy and checking for dodges and
 // game over situations.
 function draw() {
-  // A black background
-  background(255);
+
+  // Display background
+  imageMode(CENTER);
+  image(backgroundImage, width/2, height/2);
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
@@ -146,22 +152,22 @@ function draw() {
   // Update the enemy's position based on its velocity
   enemyX = enemyX + enemyVX;
 
-  // Check if the enemy and avatar overlap - if they do the player loses
+  // Check if the enemy and avatar overlap - if they do the wizard gains a point
   // We do this by checking if the distance between the centre of the enemy
   // and the centre of the avatar is less that their combined radii
   if (dist(enemyX,enemyY,avatarX,avatarY) < enemyWidth/2 + avatarWidth/2) {
     // Tell the player they lost
-    console.log("YOU LOSE!");
+    console.log("POINT!");
     // Reset the enemy's position
     enemyX = 0;
     enemyY = random(0,height);
     // Reset the enemy's size and speed
-    enemyWidth = 75;
+    enemyWidth = 50;
     enemyHeight = enemyWidth;
     enemySpeed = 5;
     // Reset the avatar's position
-    avatarX = width/2;
-    avatarY = height/2;
+    //avatarX = width/2;
+    //avatarY = height/2;
     // Reset the dodge counter
     dodges = 0;
     // Reset the emergency shrink button
@@ -174,7 +180,7 @@ function draw() {
     console.log("YOU LOSE!");
     enemyX = 0;
     enemyY = random(0,height);
-    enemyWidth = 75;
+    enemyWidth = 50;
     enemyHeight = enemyWidth;
     enemySpeed = 5;
     avatarX = width/2;
@@ -211,14 +217,17 @@ function draw() {
   // Display the enemy
   image(enemy, enemyX, enemyY, enemyWidth, enemyHeight);
 
-  // Change tint of avatar every 5 frames
+  // Change tint every 5 framess
   if (frameCount % 5 === 1) {
     red = random(choices);
     blue = random(choices);
     green = random(choices);
-    tint(red, green, blue);
-    console.log("tinted!");
+    if (red === 125 && green === 125) {
+      blue = 255;
     }
+    tint(red, green, blue);
+    console.log(red + " " + green + " " + blue);
+  }
 
   // Display our avatar
   image(avatar, avatarX, avatarY, avatarWidth, avatarHeight);
