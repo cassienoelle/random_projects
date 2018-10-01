@@ -68,10 +68,10 @@ var larperHeight = larperWidth;
 var larperWidthIncrease = 5;
 
 // The speed and velocity of our drugs
-var larperSpeed = 10;
-var larperVY = 10;
+var larperSpeed = 7;
+var larperVY = 7;
 // How much faster the drugs gets with each successful dodge
-var larperSpeedIncrease = 2;
+var larperSpeedIncrease = 0.5;
 
 // Second level drugs image
 var drugsLevelUp;
@@ -335,7 +335,7 @@ function youLose() {
   else if (lose === false) {
     fill(255);
     textFont(khandFont);
-    textSize(32);
+    textSize(60);
     textAlign(RIGHT, BOTTOM);
     textX = width - 10;
     textY = height;
@@ -348,7 +348,7 @@ function youLose() {
     lose = false;
     fill(255);
     textFont(khandFont);
-    textSize(32);
+    textSize(60);
     textAlign(RIGHT, BOTTOM);
     textX = width - 10;
     textY = height;
