@@ -2,10 +2,34 @@
 
 /*****************
 
-Title of Project
-Author Name
+Quiz Questions
+Cassie Smith
 
-This is a template. You must fill in the title,
-author, and this description to match your project!
+Just randomly show some pre-determined quiz questions
+Basic study tool
 
 ******************/
+
+let numQuestions = 4;
+let nextQuestion;
+let $question;
+let $response;
+
+$(document).ready(function() {
+
+  $question = $('#question');
+  $response = $('#response');
+  loadQuestion();
+
+  $question.on('click', loadQuestion);
+
+});
+
+function loadQuestion() {
+  nextQuestion = getRandomElement(cybernetics);
+  $question.text(nextQuestion);
+}
+
+function getRandomElement(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
