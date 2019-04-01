@@ -15,5 +15,13 @@ let cybernetics = [
   'What are the two types of feedback? Briefly describe each.',
   'What is an Action-Perception Loop?',
   'Explain autopoiesis / autopoietic system',
-  'What is an operationally closed system?'
+  'What is an operationally closed system?',
+  'What are Brooks 4 mistaken ways of thinking about AI?',
+  'What are Brooks 7 mistakes people are making?',
+  'What are Weaver\'s 3 levels of communication problems?',
+  'Show the relationship between uncertainty, information, entropy'
+]
+
+let information = [
+
 ]
