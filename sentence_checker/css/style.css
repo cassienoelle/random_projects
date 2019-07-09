@@ -5,20 +5,12 @@ This is the style file for this project.
 **********************************************/
 
 
-#quiz {
+#article {
   margin: auto;
   width: 710px;
 }
-#question {
-  margin: auto;
-  width: 700px;
-  text-align: center;
-  font-size: 24px;
-  font-family: Helvetica;
-  margin-top: 100px;
-}
 
-#response {
+#content {
   width: 700px;
   height: 300px;
   margin-top: 50px;
